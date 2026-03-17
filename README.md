@@ -5,9 +5,9 @@ The proposed method in this project combines contrastive learning (SimCLR), boot
 The objective is to learn robust and generalizable visual representations without reliance on labelled data, enabling strong performance in downstream tasks such as classification, medical imaging, and low-data regimes.
 
 
-## 2. Methodology
+## 1. Methodology
 
-### 2.1 Multi-View Augmentation
+### 1.1 Multi-View Augmentation
 Given an input image $\( x \)$, two stochastic augmentations are generated:
 
 $\[x_1 = t_1(x), \quad x_2 = t_2(x)\]$
@@ -15,7 +15,7 @@ $\[x_1 = t_1(x), \quad x_2 = t_2(x)\]$
 where $\( t_1, t_2 \sim \mathcal{T} \)$ are sampled from a distribution of augmentations.
 
 
-### 2.2 Encoder and Projection
+### 1.2 Encoder and Projection
 A Vision Transformer encoder $\( f_\theta \)$ extracts representations:
 
 $\[h_i = f_\theta(x_i)\]$
@@ -28,7 +28,7 @@ Normalised embeddings:
 
 $\[\tilde{z}_i = \frac{z_i}{\|z_i\|}\]$
 
-### 2.3 SimCLR Loss (Contrastive Objective)
+### 1.3 SimCLR Loss (Contrastive Objective)
 
 The InfoNCE loss is defined as:
 
@@ -39,7 +39,7 @@ where:
 - $\( \tau \)$ is a temperature parameter
 
 
-### 2.4 BYOL Loss (Bootstrap Objective)
+### 1.4 BYOL Loss (Bootstrap Objective)
 
 A predictor network $\( q_\theta \)$ is applied:
 
@@ -54,7 +54,7 @@ Loss:
 $\[\mathcal{L}_{BYOL} = 2 - 2 \cdot \frac{p_i \cdot z_j'}{\|p_i\|\|z_j'\|}\]$
 
 
-### 2.5 DINO Loss (Self-Distillation)
+### 1.5 DINO Loss (Self-Distillation)
 
 Student and teacher outputs:
 
@@ -65,7 +65,7 @@ Loss:
 $\[\mathcal{L}_{DINO} = - \sum p_t \log p_s\]$
 
 
-### 2.6 Masked Autoencoder (MAE)
+### 1.6 Masked Autoencoder (MAE)
 
 Random masking is applied to latent features:
 
@@ -80,7 +80,7 @@ Reconstruction loss:
 $\[\mathcal{L}_{MAE} = \| \tilde{h} - h \|_2^2\]$
 
 
-### 2.7 Total Objective
+### 1.7 Total Objective
 
 The final loss is a weighted combination:
 
@@ -92,10 +92,10 @@ The final loss is a weighted combination:
 \lambda_4 \mathcal{L}_{MAE}
 \]
 
-## 4. Implementation Details
+## 2. Implementation Details
 
 - Backbone: Vision Transformer (ViT-Base, patch size 16)
-- Optimizer: AdamW
+- Optimiser: AdamW
 - Learning Rate: 3e-4
 - Batch Size: 128
 - Temperature (SimCLR): 0.2
@@ -105,7 +105,7 @@ The final loss is a weighted combination:
 
 ---
 
-## 5. Linear Evaluation Protocol
+## 3. Linear Evaluation Protocol
 
 To evaluate representation quality, a linear classifier is trained on frozen encoder features:
 
@@ -117,7 +117,7 @@ where \( h \) is the frozen representation.
 
 ---
 
-## 6. Use Cases
+## 4. Use Cases
 
 - Medical imaging (e.g., OCT scans)
 - Low-label or unlabeled datasets
@@ -126,7 +126,7 @@ where \( h \) is the frozen representation.
 
 ---
 
-## 7. Future Work
+## 5. Future Work
 
 - Integration with multimodal learning (vision-language models)
 - Scaling to larger datasets (ImageNet, LAION)
