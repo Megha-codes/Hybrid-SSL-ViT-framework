@@ -8,7 +8,7 @@ The objective is to learn robust and generalizable visual representations withou
 ## 2. Methodology
 
 ### 2.1 Multi-View Augmentation
-Given an input image \( x \), two stochastic augmentations are generated:
+Given an input image $\( x \)$, two stochastic augmentations are generated:
 
 $\[x_1 = t_1(x), \quad x_2 = t_2(x)\]$
 
@@ -16,11 +16,11 @@ where $\( t_1, t_2 \sim \mathcal{T} \)$ are sampled from a distribution of augme
 
 
 ### 2.2 Encoder and Projection
-A Vision Transformer encoder \( f_\theta \) extracts representations:
+A Vision Transformer encoder $\( f_\theta \)$ extracts representations:
 
 $\[h_i = f_\theta(x_i)\]$
 
-These representations are passed through a projection head \( g_\theta \):
+These representations are passed through a projection head $\( g_\theta \)$:
 
 $\[z_i = g_\theta(h_i)\]$
 
@@ -32,70 +32,52 @@ $\[\tilde{z}_i = \frac{z_i}{\|z_i\|}\]$
 
 The InfoNCE loss is defined as:
 
-\[
-\mathcal{L}_{SimCLR} = -\sum_{i=1}^{N} \log \frac{\exp(\text{sim}(z_i, z_i^+)/\tau)}{\sum_{j=1}^{2N} \exp(\text{sim}(z_i, z_j)/\tau)}
-\]
+$\[\mathcal{L}_{SimCLR} = -\sum_{i=1}^{N} \log \frac{\exp(\text{sim}(z_i, z_i^+)/\tau)}{\sum_{j=1}^{2N} \exp(\text{sim}(z_i, z_j)/\tau)}\]$
 
 where:
-- \( \text{sim}(a,b) = \frac{a^\top b}{\|a\|\|b\|} \)
-- \( \tau \) is a temperature parameter
+- $\( \text{sim}(a,b) = \frac{a^\top b}{\|a\|\|b\|} \)$
+- $\( \tau \)$ is a temperature parameter
 
 
 ### 2.4 BYOL Loss (Bootstrap Objective)
 
-A predictor network \( q_\theta \) is applied:
+A predictor network $\( q_\theta \)$ is applied:
 
-\[
-p_i = q_\theta(z_i)
-\]
+$\[p_i = q_\theta(z_i)\]$
 
-A momentum encoder \( f_{\theta'} \) produces targets:
+A momentum encoder $\( f_{\theta'} \)$ produces targets:
 
-\[
-z_i' = g_{\theta'}(f_{\theta'}(x_i))
-\]
+$\[z_i' = g_{\theta'}(f_{\theta'}(x_i))\]$
 
 Loss:
 
-\[
-\mathcal{L}_{BYOL} = 2 - 2 \cdot \frac{p_i \cdot z_j'}{\|p_i\|\|z_j'\|}
-\]
+$\[\mathcal{L}_{BYOL} = 2 - 2 \cdot \frac{p_i \cdot z_j'}{\|p_i\|\|z_j'\|}\]$
 
 
 ### 2.5 DINO Loss (Self-Distillation)
 
 Student and teacher outputs:
 
-\[
-p_s = \text{softmax}(z_s / T_s), \quad p_t = \text{softmax}(z_t / T_t)
-\]
+$\[p_s = \text{softmax}(z_s / T_s), \quad p_t = \text{softmax}(z_t / T_t)\]$
 
 Loss:
 
-\[
-\mathcal{L}_{DINO} = - \sum p_t \log p_s
-\]
+$\[\mathcal{L}_{DINO} = - \sum p_t \log p_s\]$
 
 
 ### 2.6 Masked Autoencoder (MAE)
 
 Random masking is applied to latent features:
 
-\[
-\hat{h} = M(h)
-\]
+$\[\hat{h} = M(h)\]$
 
 A decoder reconstructs masked features:
 
-\[
-\tilde{h} = d_\theta(\hat{h})
-\]
+$\[\tilde{h} = d_\theta(\hat{h})\]$
 
 Reconstruction loss:
 
-\[
-\mathcal{L}_{MAE} = \| \tilde{h} - h \|_2^2
-\]
+$\[\mathcal{L}_{MAE} = \| \tilde{h} - h \|_2^2\]$
 
 
 ### 2.7 Total Objective
