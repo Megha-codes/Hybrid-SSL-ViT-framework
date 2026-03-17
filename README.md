@@ -10,31 +10,23 @@ The objective is to learn robust and generalizable visual representations withou
 ### 2.1 Multi-View Augmentation
 Given an input image \( x \), two stochastic augmentations are generated:
 
-\[
-x_1 = t_1(x), \quad x_2 = t_2(x)
-\]
+$\[x_1 = t_1(x), \quad x_2 = t_2(x)\]$
 
-where \( t_1, t_2 \sim \mathcal{T} \) are sampled from a distribution of augmentations.
+where $\( t_1, t_2 \sim \mathcal{T} \)$ are sampled from a distribution of augmentations.
 
 
 ### 2.2 Encoder and Projection
 A Vision Transformer encoder \( f_\theta \) extracts representations:
 
-\[
-h_i = f_\theta(x_i)
-\]
+$\[h_i = f_\theta(x_i)\]$
 
 These representations are passed through a projection head \( g_\theta \):
 
-\[
-z_i = g_\theta(h_i)
-\]
+$\[z_i = g_\theta(h_i)\]$
 
 Normalised embeddings:
 
-\[
-\tilde{z}_i = \frac{z_i}{\|z_i\|}
-\]
+$\[\tilde{z}_i = \frac{z_i}{\|z_i\|}\]$
 
 ### 2.3 SimCLR Loss (Contrastive Objective)
 
